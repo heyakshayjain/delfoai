@@ -1,23 +1,23 @@
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Get the current page depth and adjust root path
-        const pathDepth = window.location.pathname.split('/').length - 2;
-        const rootPath = pathDepth > 0 ? '../'.repeat(pathDepth) : './';
+        const footerResponse = await fetch('/components/footer.html');
+        if (!footerResponse.ok) throw new Error('Failed to load footer');
+        const footerHtml = await footerResponse.text();
+        document.getElementById('footer').innerHTML = footerHtml;
         
-        // Fetch footer HTML
-        const response = await fetch(`${rootPath}components/footer.html`);
-        const html = await response.text();
-        
-        // Replace [ROOT] placeholder with correct path
-        const adjustedHtml = html.replace(/\[ROOT\]/g, rootPath.slice(0, -1));
-        
-        // Insert footer
-        const footerElement = document.getElementById('footer');
-        footerElement.innerHTML = adjustedHtml;
-
         // Initialize Lucide icons in footer
         lucide.createIcons();
+        
+        // Handle relative paths
+        const currentPath = window.location.pathname;
+        const isInSubfolder = currentPath.split('/').length > 2;
+        
+        if (isInSubfolder) {
+            document.querySelectorAll('#footer a[href^="/"]').forEach(link => {
+                link.href = '.' + link.getAttribute('href');
+            });
+        }
     } catch (error) {
-        console.error('Error loading footer:', error);
+        console.error('Footer loading error:', error);
     }
 }); 

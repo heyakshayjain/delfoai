@@ -1,30 +1,32 @@
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Get the current page depth and adjust root path
-        const pathDepth = window.location.pathname.split('/').length - 2;
-        const rootPath = pathDepth > 0 ? '../'.repeat(pathDepth) : './';
+        const isServicePage = window.location.pathname.includes('/services/');
+        const navPath = isServicePage ? '../components/service-navigation.html' : 'components/navigation.html';
         
-        // Fetch navigation HTML
-        const response = await fetch(`${rootPath}components/navigation.html`);
-        const html = await response.text();
+        const navResponse = await fetch(navPath);
+        if (!navResponse.ok) throw new Error('Failed to load navigation');
+        const navHtml = await navResponse.text();
+        document.getElementById('navigation').innerHTML = navHtml;
         
-        // Replace [ROOT] placeholder with correct path
-        const adjustedHtml = html.replace(/\[ROOT\]/g, rootPath.slice(0, -1));
+        // Initialize Lucide icons
+        lucide.createIcons();
         
-        // Insert navigation
-        const navElement = document.getElementById('navigation');
-        navElement.innerHTML = adjustedHtml;
-
-        // Re-initialize Alpine.js on the navigation element
-        if (window.Alpine) {
-            navElement.querySelectorAll('[x-data]').forEach(el => {
-                Alpine.initTree(el);
+        // Initialize theme
+        const isDark = localStorage.theme === 'dark' || 
+            (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        
+        document.documentElement.classList.toggle('dark', isDark);
+        
+        // Handle relative paths
+        const currentPath = window.location.pathname;
+        const isInSubfolder = currentPath.split('/').length > 2;
+        
+        if (isInSubfolder) {
+            document.querySelectorAll('#navigation a[href^="/"]').forEach(link => {
+                link.href = '.' + link.getAttribute('href');
             });
         }
-        
-        // Initialize Lucide icons in navigation
-        lucide.createIcons();
     } catch (error) {
-        console.error('Error loading navigation:', error);
+        console.error('Navigation loading error:', error);
     }
 }); 

@@ -5,35 +5,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DelfoAI - AI and Data Solutions</title>
-    <meta name="description" content="Professional AI and Data Solutions in Germany" />
+    <meta name="description" content="Transform your business with AI and data solutions" />
     <meta name="author" content="Akshay" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    animation: {
-                        'fade-in': 'fadeIn 0.3s ease-in-out',
-                        'slide-in': 'slideIn 0.3s ease-out'
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
-                        },
-                        slideIn: {
-                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
-                        }
-                    }
-                }
-            }
+        // Initialize theme before Alpine loads
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
         }
+
+        // Add Alpine.js initialization
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('theme', {
+                dark: localStorage.theme === 'dark' || 
+                      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+                toggle() {
+                    this.dark = !this.dark;
+                    localStorage.theme = this.dark ? 'dark' : 'light';
+                    document.documentElement.classList.toggle('dark', this.dark);
+                }
+            });
+        });
     </script>
     <style>
         /* Transition effects */
@@ -84,46 +80,320 @@
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="css/styles.css">
-    <!-- Add Alpine.js before the closing head tag -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>
 
-  <body class="bg-white dark:bg-gray-900 transition-colors">
-    <div id="navigation"></div>
-    <main class="flex flex-col items-center">
-      <div id="hero-section" class="w-full max-w-5xl px-4 sm:px-6"></div>
-      <div id="services-section" class="w-full max-w-5xl px-4 sm:px-6"></div>
-      <div id="why-choose-container" class="w-full max-w-5xl px-4 sm:px-6"></div>
-      <div id="process-section" class="w-full max-w-5xl px-4 sm:px-6"></div>
-      <div id="testimonials-section" class="w-full max-w-5xl px-4 sm:px-6"></div>
-      <div id="faq-section" class="w-full max-w-5xl px-4 sm:px-6"></div>
-    </main>
-    <div id="footer"></div>
-    <script src="js/navigation.js"></script>
-    <script src="js/footer.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        const components = [
-          { id: 'hero-section', file: 'hero' },
-          { id: 'services-section', file: 'services' },
-          { id: 'why-choose-container', file: 'why-choose' },
-          { id: 'process-section', file: 'process' },
-          { id: 'testimonials-section', file: 'testimonials' },
-          { id: 'faq-section', file: 'faq' }
-        ];
-        
-        try {
-          await Promise.all(components.map(async ({ id, file }) => {
-            const response = await fetch(`components/${file}.html`);
-            if (!response.ok) throw new Error(`Failed to load ${file}`);
-            const html = await response.text();
-            document.getElementById(id).innerHTML = html;
-          }));
-          lucide.createIcons();
-        } catch (error) {
-          console.error('Error loading components:', error);
+  <body class="bg-white dark:bg-gray-900 transition-colors min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="p-4 border-b border-gray-200 dark:border-gray-800" x-data="{ 
+        servicesOpen: false,
+        darkMode: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+        toggleTheme() {
+            this.darkMode = !this.darkMode;
+            localStorage.theme = this.darkMode ? 'dark' : 'light';
+            document.documentElement.classList.toggle('dark');
         }
-      });
+    }">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-800 dark:text-white animate-fade-in">
+                DelfoAI
+            </a>
+            <div class="flex items-center space-x-8">
+                <div class="flex items-center space-x-8 animate-slide-in">
+                    <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Home</a>
+                    <div class="relative" @mouseenter="servicesOpen = true" @mouseleave="servicesOpen = false">
+                        <button class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center space-x-1">
+                            <span>Services</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </button>
+                        <div x-show="servicesOpen" 
+                             x-transition 
+                             class="absolute left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50">
+                            <a href="services/data-analytics.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Data Analytics</a>
+                            <a href="services/machine-learning.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Machine Learning</a>
+                            <a href="services/ai-automation.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">AI Automation</a>
+                            <a href="services/data-engineering.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Data Engineering</a>
+                        </div>
+                    </div>
+                    <a href="about.html" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">About</a>
+                    <a href="blog.html" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Blog</a>
+                    <a href="contact.html" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:opacity-90 transition-all duration-300">Contact Us</a>
+                    <button @click="toggleTheme" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <i data-lucide="sun" x-show="!darkMode" class="w-5 h-5 text-gray-600"></i>
+                        <i data-lucide="moon" x-show="darkMode" class="w-5 h-5 text-gray-300"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="flex-grow">
+        <section id="hero-section" class="w-full"></section>
+        <section id="services" class="py-20 bg-gray-50 dark:bg-gray-800">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center mb-12">
+                    <span class="bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-600 bg-clip-text text-transparent">
+                        Our Services
+                    </span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Data Analytics -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                        <i data-lucide="bar-chart" class="w-12 h-12 text-purple-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Data Analytics</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Transform raw data into actionable insights for your business</p>
+                        <a href="services/data-analytics.html" class="mt-4 inline-block text-purple-600 hover:text-purple-700">Learn More →</a>
+                    </div>
+
+                    <!-- Machine Learning -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                        <i data-lucide="brain" class="w-12 h-12 text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Machine Learning</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Implement intelligent solutions that learn and adapt</p>
+                        <a href="services/machine-learning.html" class="mt-4 inline-block text-blue-600 hover:text-blue-700">Learn More →</a>
+                    </div>
+
+                    <!-- AI Automation -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                        <i data-lucide="cpu" class="w-12 h-12 text-indigo-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">AI Automation</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Automate processes with intelligent AI solutions</p>
+                        <a href="services/ai-automation.html" class="mt-4 inline-block text-indigo-600 hover:text-indigo-700">Learn More →</a>
+                    </div>
+
+                    <!-- Data Engineering -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                        <i data-lucide="database" class="w-12 h-12 text-purple-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Data Engineering</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Build robust data infrastructure and pipelines</p>
+                        <a href="services/data-engineering.html" class="mt-4 inline-block text-purple-600 hover:text-purple-700">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="why-choose-container" class="w-full"></section>
+        <section id="process-section" class="w-full bg-gray-50 dark:bg-gray-800"></section>
+        <section id="testimonials-section" class="w-full"></section>
+        <section id="faq-section" class="w-full bg-gray-50 dark:bg-gray-800"></section>
+    </main>
+    
+    <div id="footer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Load navigation
+                const navResponse = await fetch('components/navigation.html');
+                if (!navResponse.ok) throw new Error('Failed to load navigation');
+                const navHtml = await navResponse.text();
+                document.getElementById('navigation').innerHTML = navHtml;
+
+                // Load footer
+                const footerResponse = await fetch('components/footer.html');
+                if (!footerResponse.ok) throw new Error('Failed to load footer');
+                const footerHtml = await footerResponse.text();
+                document.getElementById('footer').innerHTML = footerHtml;
+
+                // Load sections
+                const sections = ['hero', 'services', 'why-choose', 'process', 'testimonials', 'faq'];
+                await Promise.all(sections.map(async (section) => {
+                    const response = await fetch(`components/${section}.html`);
+                    if (!response.ok) throw new Error(`Failed to load ${section}`);
+                    const html = await response.text();
+                    document.getElementById(`${section}-section`).innerHTML = html;
+                }));
+
+                // Initialize Lucide icons
+                lucide.createIcons();
+            } catch (error) {
+                console.error('Error loading components:', error);
+            }
+        });
     </script>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">
+                <span class="bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-600 bg-clip-text text-transparent">
+                    Why Choose Us
+                </span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Expertise -->
+                <div class="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <i data-lucide="award" class="w-12 h-12 text-purple-600 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Expert Team</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Our team consists of experienced data scientists and AI specialists</p>
+                </div>
+
+                <!-- Innovation -->
+                <div class="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <i data-lucide="lightbulb" class="w-12 h-12 text-blue-600 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Innovative Solutions</h3>
+                    <p class="text-gray-600 dark:text-gray-400">We stay at the forefront of AI and data technology</p>
+                </div>
+
+                <!-- Results -->
+                <div class="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <i data-lucide="target" class="w-12 h-12 text-indigo-600 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Results Driven</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Focus on delivering measurable business outcomes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">
+                <span class="bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-600 bg-clip-text text-transparent">
+                    Our Process
+                </span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Discovery -->
+                <div class="relative">
+                    <div class="flex items-center justify-center mb-4">
+                        <span class="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-2">Discovery</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-center">Understanding your business needs and objectives</p>
+                </div>
+
+                <!-- Analysis -->
+                <div class="relative">
+                    <div class="flex items-center justify-center mb-4">
+                        <span class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-2">Analysis</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-center">Analyzing data and identifying opportunities</p>
+                </div>
+
+                <!-- Implementation -->
+                <div class="relative">
+                    <div class="flex items-center justify-center mb-4">
+                        <span class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-2">Implementation</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-center">Developing and deploying solutions</p>
+                </div>
+
+                <!-- Optimization -->
+                <div class="relative">
+                    <div class="flex items-center justify-center mb-4">
+                        <span class="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold">4</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-2">Optimization</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-center">Continuous improvement and refinement</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">
+                <span class="bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-600 bg-clip-text text-transparent">
+                    What Our Clients Say
+                </span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="images/client1.jpg" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Sarah Johnson</h4>
+                            <p class="text-gray-600 dark:text-gray-400">CEO, TechCorp</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">"DelfoAI transformed our data analytics capabilities, leading to a 40% increase in operational efficiency."</p>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="images/client2.jpg" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Michael Chen</h4>
+                            <p class="text-gray-600 dark:text-gray-400">CTO, InnovateCo</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">"The AI automation solutions provided by DelfoAI helped us reduce costs by 30% while improving accuracy."</p>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="images/client3.jpg" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold">Emma Davis</h4>
+                            <p class="text-gray-600 dark:text-gray-400">COO, DataFlow</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">"Working with DelfoAI has been transformative. Their expertise in machine learning is unmatched."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">
+                <span class="bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-600 bg-clip-text text-transparent">
+                    Frequently Asked Questions
+                </span>
+            </h2>
+            <div class="max-w-3xl mx-auto space-y-6" x-data="{selected:null}">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <button @click="selected !== 1 ? selected = 1 : selected = null" 
+                            class="flex justify-between items-center w-full p-6">
+                        <span class="font-semibold">What industries do you serve?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform" 
+                           :class="{'rotate-180': selected === 1}"></i>
+                    </button>
+                    <div x-show="selected === 1" 
+                         x-transition 
+                         class="p-6 pt-0 text-gray-600 dark:text-gray-400">
+                        We serve a wide range of industries including finance, healthcare, retail, manufacturing, and technology. Our solutions are customized to meet industry-specific needs and requirements.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <button @click="selected !== 2 ? selected = 2 : selected = null" 
+                            class="flex justify-between items-center w-full p-6">
+                        <span class="font-semibold">How long does implementation typically take?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform" 
+                           :class="{'rotate-180': selected === 2}"></i>
+                    </button>
+                    <div x-show="selected === 2" 
+                         x-transition 
+                         class="p-6 pt-0 text-gray-600 dark:text-gray-400">
+                        Implementation timelines vary based on project scope and complexity. Typically, our projects range from 2-6 months, with some quick-start solutions available in as little as 2-4 weeks.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <button @click="selected !== 3 ? selected = 3 : selected = null" 
+                            class="flex justify-between items-center w-full p-6">
+                        <span class="font-semibold">What kind of support do you provide?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform" 
+                           :class="{'rotate-180': selected === 3}"></i>
+                    </button>
+                    <div x-show="selected === 3" 
+                         x-transition 
+                         class="p-6 pt-0 text-gray-600 dark:text-gray-400">
+                        We provide comprehensive support including 24/7 technical assistance, regular maintenance, updates, and continuous optimization of your solutions. Our team is always available to help you maximize the value of your AI implementation.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
   </body>
 </html>

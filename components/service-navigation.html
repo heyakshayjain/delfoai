@@ -8,12 +8,12 @@
     }
 }">
     <div class="container mx-auto flex justify-between items-center">
-        <a href="index.html" class="text-2xl font-bold text-gray-800 dark:text-white animate-fade-in">
+        <a href="../index.html" class="text-2xl font-bold text-gray-800 dark:text-white animate-fade-in">
             DelfoAI
         </a>
         <div class="flex items-center space-x-8">
             <div class="flex items-center space-x-8 animate-slide-in">
-                <a href="index.html" class="nav-link">Home</a>
+                <a href="../index.html" class="nav-link">Home</a>
                 <div class="relative" @mouseenter="servicesOpen = true" @mouseleave="servicesOpen = false">
                     <button class="nav-link flex items-center space-x-1">
                         <span>Services</span>
@@ -22,15 +22,15 @@
                     <div x-show="servicesOpen" 
                          x-transition 
                          class="absolute left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50">
-                        <a href="services/data-analytics.html" class="dropdown-item">Data Analytics</a>
-                        <a href="services/machine-learning.html" class="dropdown-item">Machine Learning</a>
-                        <a href="services/ai-automation.html" class="dropdown-item">AI Automation</a>
-                        <a href="services/data-engineering.html" class="dropdown-item">Data Engineering</a>
+                        <a href="data-analytics.html" class="dropdown-item">Data Analytics</a>
+                        <a href="machine-learning.html" class="dropdown-item">Machine Learning</a>
+                        <a href="ai-automation.html" class="dropdown-item">AI Automation</a>
+                        <a href="data-engineering.html" class="dropdown-item">Data Engineering</a>
                     </div>
                 </div>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="blog.html" class="nav-link">Blog</a>
-                <a href="contact.html" class="nav-link-button">Contact Us</a>
+                <a href="../about.html" class="nav-link">About</a>
+                <a href="../blog.html" class="nav-link">Blog</a>
+                <a href="../contact.html" class="nav-link-button">Contact Us</a>
                 <button @click="toggleTheme" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                     <i data-lucide="sun" x-show="!darkMode" class="w-5 h-5 text-gray-600"></i>
                     <i data-lucide="moon" x-show="darkMode" class="w-5 h-5 text-gray-300"></i>
