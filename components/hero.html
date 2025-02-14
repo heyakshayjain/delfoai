@@ -1,0 +1,207 @@
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden" 
+         x-data="{ mouseX: 0, mouseY: 0 }" 
+         @mousemove="mouseX = $event.clientX; mouseY = $event.clientY">
+    <!-- Animated Background -->
+    <div class="absolute inset-0 -z-10">
+        <!-- Gradient Mesh -->
+        <div class="absolute inset-0 bg-gradient-to-tr from-blue-600/20 via-purple-500/20 to-blue-400/20 animate-gradient"></div>
+        
+        <!-- Interactive Blobs that follow mouse -->
+        <div class="absolute w-96 h-96 bg-blue-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob"
+             :style="{ transform: `translate(${mouseX * 0.01}px, ${mouseY * 0.01}px) scale(1)` }"></div>
+        <div class="absolute w-96 h-96 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"
+             :style="{ transform: `translate(${mouseX * -0.01}px, ${mouseY * -0.01}px) scale(1.1)` }"></div>
+        <div class="absolute w-96 h-96 bg-blue-400/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"
+             :style="{ transform: `translate(${mouseX * 0.02}px, ${mouseY * 0.02}px) scale(0.9)` }"></div>
+
+        <!-- Grid Pattern -->
+        <div class="absolute inset-0 opacity-20 transition-opacity duration-300 hover:opacity-30"
+             style="background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
+                    background-size: 50px 50px;">
+        </div>
+
+        <!-- Custom Cursor -->
+        <div class="cursor-dot" 
+             :style="{ transform: `translate(${mouseX}px, ${mouseY}px)` }"></div>
+        <div class="cursor-ring" 
+             :style="{ transform: `translate(${mouseX}px, ${mouseY}px)` }"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
+        <h1 class="text-5xl md:text-7xl font-bold mb-8 animate-fade-in hover-lift">
+            <span class="text-gray-900 dark:text-white cursor-hover">Transform Your Business with</span>
+            <br class="hidden sm:block">
+            <span id="typed-text" class="bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-600 bg-clip-text text-transparent cursor-hover"></span>
+        </h1>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12 animate-fade-in animation-delay-500">
+            <a href="https://calendly.com/heyakshayjain/30min" 
+               target="_blank"
+               class="group px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl font-semibold inline-flex items-center cursor-hover">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Book Free Consultation
+                <span class="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
+            </a>
+            <a href="about.html" 
+               class="px-8 py-4 border-2 border-purple-600 dark:border-purple-400 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-600 hover:text-white dark:hover:bg-purple-400 dark:hover:text-gray-900 transition-all duration-300 transform hover:-translate-y-1 font-semibold cursor-hover">
+                Learn More
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+@keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.animate-blob {
+    animation: blob 7s infinite;
+}
+
+.animate-gradient {
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+}
+
+.animation-delay-2000 {
+    animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+    animation-delay: 4s;
+}
+
+.animation-delay-500 {
+    animation-delay: 0.5s;
+}
+
+/* Custom Cursor Styles */
+.cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: #8B5CF6;
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: width 0.2s, height 0.2s;
+    z-index: 999;
+}
+
+.cursor-ring {
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(139, 92, 246, 0.5);
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: all 0.1s ease-out;
+    z-index: 999;
+}
+
+/* Cursor Hover Effects */
+.cursor-hover {
+    cursor: none;
+}
+
+.cursor-hover:hover ~ .cursor-dot {
+    width: 8px;
+    height: 8px;
+    background: #6366F1;
+}
+
+.cursor-hover:hover ~ .cursor-ring {
+    width: 40px;
+    height: 40px;
+    border-color: rgba(99, 102, 241, 0.5);
+}
+
+/* Hide default cursor when using custom cursor */
+body:has(.cursor-hover:hover) {
+    cursor: none;
+}
+
+/* Interactive hover effects */
+.hover-lift {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+/* Disable custom cursor on mobile */
+@media (max-width: 768px) {
+    .cursor-dot, .cursor-ring {
+        display: none;
+    }
+    
+    .cursor-hover {
+        cursor: pointer;
+    }
+}
+
+/* Gradient animation */
+.animate-gradient {
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+}
+
+/* Blob animation with mouse interaction */
+.animate-blob {
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Add this to your existing keyframes and animation classes */
+</style>
+
+<script>
+// Add this script to handle cursor movement smoothly
+document.addEventListener('DOMContentLoaded', () => {
+    const cursor = document.querySelector('.cursor-dot');
+    const cursorRing = document.querySelector('.cursor-ring');
+    
+    let mouseX = 0;
+    let mouseY = 0;
+    let dotX = 0;
+    let dotY = 0;
+    let ringX = 0;
+    let ringY = 0;
+    
+    function animate() {
+        // Smooth movement for dot
+        dotX += (mouseX - dotX) * 0.2;
+        dotY += (mouseY - dotY) * 0.2;
+        
+        // Smooth movement for ring
+        ringX += (mouseX - ringX) * 0.1;
+        ringY += (mouseY - ringY) * 0.1;
+        
+        cursor.style.transform = `translate(${dotX - 3}px, ${dotY - 3}px)`;
+        cursorRing.style.transform = `translate(${ringX - 15}px, ${ringY - 15}px)`;
+        
+        requestAnimationFrame(animate);
+    }
+    
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+    
+    animate();
+});
+</script> 

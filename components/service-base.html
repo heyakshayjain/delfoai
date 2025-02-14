@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{SERVICE_TITLE} - DelfoAI</title>
+    <meta name="description" content="{SERVICE_DESCRIPTION}" />
+    <meta name="author" content="Akshay" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors">
+    <!-- Navigation -->
+    <div id="navigation"></div>
+
+    <!-- Main Content -->
+    <main>
+        {SERVICE_CONTENT}
+    </main>
+
+    <!-- Scripts -->
+    <script src="../js/navigation.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html> 
