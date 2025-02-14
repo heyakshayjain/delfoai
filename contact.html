@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - DelfoAI</title>
+    <meta name="description" content="Contact DelfoAI - Data and AI Startup in Germany" />
+    <meta name="author" content="Akshay" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .transition-colors { transition: all 0.3s ease; }
+        .transition-transform { transition: transform 0.2s ease; }
+        .hover-lift:hover { transform: translateY(-2px); }
+    </style>
+  </head>
+  <body class="bg-white dark:bg-gray-900 transition-colors">
+    <!-- Navigation -->
+    <nav class="p-4 border-b border-gray-200 dark:border-gray-800" x-data="{ 
+        servicesOpen: false,
+        darkMode: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+        toggleTheme() {
+            this.darkMode = !this.darkMode;
+            localStorage.theme = this.darkMode ? 'dark' : 'light';
+            document.documentElement.classList.toggle('dark');
+        }
+    }">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-800 dark:text-white animate-fade-in">
+                DelfoAI
+            </a>
+            <div class="flex items-center space-x-8">
+                <!-- Main Navigation -->
+                <div class="flex items-center space-x-8 animate-slide-in">
+                    <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        Home
+                    </a>
+
+                    <!-- Services Dropdown -->
+                    <div class="relative" @mouseleave="servicesOpen = false">
+                        <button @mouseover="servicesOpen = true"
+                                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                            <span>Services</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200"
+                               :class="{ 'rotate-180': servicesOpen }"></i>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div x-show="servicesOpen"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 translate-y-1"
+                             x-transition:enter-end="opacity-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 translate-y-0"
+                             x-transition:leave-end="opacity-0 translate-y-1"
+                             class="absolute left-0 mt-2 w-56 rounded-xl bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                            <div class="py-2 px-3 space-y-1">
+                                <a href="services/data-engineering.html" 
+                                   class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    <i data-lucide="database" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+                                    <span>Data Engineering</span>
+                                </a>
+                                <a href="services/machine-learning.html"
+                                   class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    <i data-lucide="brain" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+                                    <span>Machine Learning</span>
+                                </a>
+                                <a href="services/data-analytics.html"
+                                   class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    <i data-lucide="bar-chart-2" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+                                    <span>Data Analytics</span>
+                                </a>
+                                <a href="services/ai-automation.html"
+                                   class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    <i data-lucide="settings" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+                                    <span>AI Automation</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="about.html" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        About
+                    </a>
+                    <a href="blog.html" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        Blog
+                    </a>
+                    <a href="contact.html" 
+                       class="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:opacity-90 transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-xl">
+                        Contact Us
+                    </a>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" 
+                        @click="toggleTheme()"
+                        class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 transition-colors hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <svg x-show="!darkMode" class="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                    <svg x-show="darkMode" class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section with Animation -->
+        <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 -z-10">
+                <img src="https://images.unsplash.com/photo-1551434678-e076c223a692" 
+                     alt="Contact Background" 
+                     class="w-full h-full object-cover opacity-10">
+            </div>
+
+            <div class="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    <span class="bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-600 bg-clip-text text-transparent">
+                        Let's Build Something Amazing
+                    </span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Ready to transform your business with AI? We're here to help!
+                </p>
+            </div>
+        </section>
+
+        <!-- Contact Section with Enhanced Layout -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- Contact Form with Enhanced UI -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+                        <div class="flex items-center mb-8">
+                            <i data-lucide="mail-plus" class="w-8 h-8 text-blue-600 dark:text-blue-400 mr-3"></i>
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Send us a Message</h2>
+                        </div>
+
+                        <form id="contactForm" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="relative">
+                                    <label for="firstName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">First Name</label>
+                                    <input type="text" id="firstName" name="firstName" required
+                                           class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-all duration-200">
+                                </div>
+                                <div class="relative">
+                                    <label for="lastName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Last Name</label>
+                                    <input type="text" id="lastName" name="lastName" required
+                                           class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-all duration-200">
+                                </div>
+                            </div>
+
+                            <div class="relative">
+                                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+                                        <i data-lucide="at-sign" class="w-5 h-5"></i>
+                                    </span>
+                                    <input type="email" id="email" name="email" required
+                                           class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-r-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-all duration-200">
+                                </div>
+                            </div>
+
+                            <div class="relative">
+                                <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+                                <select id="subject" name="subject" required
+                                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-all duration-200">
+                                    <option value="">Select a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="data-engineering">Data Engineering</option>
+                                    <option value="data-analytics">Data Analytics</option>
+                                    <option value="machine-learning">Machine Learning</option>
+                                    <option value="ai-automation">AI Automation</option>
+                                </select>
+                            </div>
+
+                            <div class="relative">
+                                <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                                <textarea id="message" name="message" rows="4" required
+                                          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-all duration-200"></textarea>
+                            </div>
+
+                            <button type="submit" 
+                                    class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:opacity-90 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2">
+                                <span>Send Message</span>
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Contact Info with Interactive Elements -->
+                    <div class="space-y-8">
+                        <!-- Office Location with Map -->
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                            <div class="flex items-center mb-4">
+                                <i data-lucide="map-pin" class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3"></i>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Our Office</h3>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Berlin, Germany</p>
+                            <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2428.654294921168!2d13.404653776191744!3d52.52000867210744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a84e2128a5b92f%3A0x93cf7497c7c3767!2sBerlin%2C%20Germany!5e0!3m2!1sen!2sus!4v1686835762118!5m2!1sen!2sus"
+                                    width="100%"
+                                    height="100%"
+                                    style="border:0;"
+                                    allowfullscreen=""
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <!-- Quick Contact Options -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <a href="mailto:contact@delfoai.com" 
+                               class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:-translate-y-1 transition-transform duration-300">
+                                <div class="flex items-center mb-3">
+                                    <i data-lucide="mail" class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-2"></i>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Email Us</h3>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300">contact@delfoai.com</p>
+                            </a>
+
+                            <a href="tel:+491234567890" 
+                               class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:-translate-y-1 transition-transform duration-300">
+                                <div class="flex items-center mb-3">
+                                    <i data-lucide="phone" class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-2"></i>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Call Us</h3>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300">+49 (0) XXX XXX XXX</p>
+                            </a>
+                        </div>
+
+                        <!-- Working Hours -->
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                            <div class="flex items-center mb-4">
+                                <i data-lucide="clock" class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3"></i>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Working Hours</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-300">Monday - Friday</span>
+                                    <span class="text-gray-900 dark:text-white font-medium">9:00 AM - 6:00 PM</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-300">Saturday - Sunday</span>
+                                    <span class="text-gray-900 dark:text-white font-medium">Closed</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media Links -->
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                            <div class="flex items-center mb-4">
+                                <i data-lucide="share-2" class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3"></i>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Connect With Us</h3>
+                            </div>
+                            <div class="flex space-x-4">
+                                <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                    <i data-lucide="linkedin" class="w-6 h-6"></i>
+                                </a>
+                                <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                    <i data-lucide="twitter" class="w-6 h-6"></i>
+                                </a>
+                                <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                    <i data-lucide="github" class="w-6 h-6"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Enhanced Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 transform translate-y-full opacity-0 transition-all duration-300">
+        <div class="bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center">
+            <i data-lucide="check-circle" class="w-6 h-6 mr-2"></i>
+            <span>Message sent successfully! We'll get back to you soon.</span>
+        </div>
+    </div>
+
+    <!-- Same Scripts as before plus Lucide icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Form submission handler with enhanced feedback
+        const form = document.getElementById('contactForm');
+        const toast = document.getElementById('toast');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show toast
+            toast.classList.remove('translate-y-full', 'opacity-0');
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-y-full', 'opacity-0');
+            }, 3000);
+            
+            // Reset form
+            form.reset();
+        });
+    </script>
+  </body>
+</html>
